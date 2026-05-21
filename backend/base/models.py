@@ -6,10 +6,13 @@ from django.contrib.auth.models import User
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
+    name_en = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
     brand = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
+    category_en = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    description_en = models.TextField(null=True, blank=True)
     rating = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
     numReviews = models.IntegerField(null=True, blank=True, default=0)
@@ -35,6 +38,15 @@ class Review(models.Model):
     def __str__(self):
         return str(self.rating)
 
+ORDER_STATUS_CHOICES = [
+    ('Processing', 'Обробляється'),
+    ('Shipped', 'Відправлено'),
+    ('Delivered', 'Доставлено'),
+    ('Returned', 'Повернено'),
+    ('Lost', 'Втрачено'),
+]
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     paymentMethod = models.CharField(max_length=200, null=True, blank=True)
@@ -49,6 +61,8 @@ class Order(models.Model):
     isDelivered = models.BooleanField(default=False)
     deliveredAt = models.DateTimeField(
         auto_now_add=False, null=True, blank=True)
+    status = models.CharField(
+        max_length=20, choices=ORDER_STATUS_CHOICES, default='Processing')
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 

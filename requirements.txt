@@ -1,0 +1,9 @@
+Django==5.1.4
+djangorestframework
+django-cors-headers
+djangorestframework-simplejwt
+Pillow
+openai
+python-dotenv
+psycopg2-binary
+requests

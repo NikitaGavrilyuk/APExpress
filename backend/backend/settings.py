@@ -10,10 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load .env from the project root (one level above backend/)
+load_dotenv(dotenv_path=BASE_DIR.parent / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9(in2yf6-s)qyji7b2@5(e$%2=bn8^vt+ed&98=sipjir#t4mb'
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
 
-    'base.apps.BaseConfig', 
+    'base.apps.BaseConfig',
+    'ai_assistant', 
 ]
 
 REST_FRAMEWORK = {
@@ -123,8 +131,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'apexpress_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
